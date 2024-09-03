@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucasangelo.todosimple.models.User;
-import com.lucasangelo.todosimple.repositories.TaskRepository;
 import com.lucasangelo.todosimple.repositories.UserRepository;
 
 @Service
@@ -14,9 +13,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
 
 
     public User findById(Long id) {
@@ -30,7 +26,6 @@ public class UserService {
     public User create(User obj) {
         obj.setId(null); // Define o ID como null para garantir que o registro seja inserido como um novo
         obj = this.userRepository.save(obj); // Salva o usuário e atualiza a instância com o ID gerado
-        this.taskRepository.saveAll(obj.getTasks()); // Salva todas as tarefas associadas ao usuário
         return obj; // Retorna o objeto User salvo
     }
 
