@@ -40,6 +40,7 @@ public class TaskService {
         Task newObj = findById(obj.getId());
         newObj.setDescription(obj.getDescription());
         return this.taskRepository.save(newObj);
+    }
 
     public void delete(Long id) {
         findById(id);
