@@ -11,15 +11,24 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "user")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class User { // Nome da classe corrigido para User
     public interface CreateUser {}
     public interface UpdateUser {}
@@ -45,80 +54,8 @@ public class User { // Nome da classe corrigido para User
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Task> tasks = new ArrayList<Task>();
 
-    public User() {
-    }
-
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return this.tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) // Verifica se o objeto comparado é o próprio objeto
-            return true;
-        if (obj == null) // Verifica se o objeto comparado é nulo
-            return false;
-        if (!(obj instanceof User)) // Verifica se o objeto comparado é uma instância de User
-            return false;
-        
-            User other = (User) obj;
-
-            // Verifica se o campo `id` não é nulo e compara os IDs
-            if (this.id == null) {
-                if (other.getId() != null) 
-                    return false;
-            } else if (!this.id.equals(other.getId())) { 
-                return false;
-            }
     
-            // Compara `username` e `password`
-            return Objects.equals(this.id, other.getId())
-                &&Objects.equals(this.username, other.getUsername())
-                && Objects.equals(this.password, other.getPassword());
-        }
-    
-        @Override
-        public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((this.id == null) ? 0 : id.hashCode());
-        return result;
-    }
     }
